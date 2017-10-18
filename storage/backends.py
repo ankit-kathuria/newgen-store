@@ -6,6 +6,10 @@ import os
 from abc import abstractmethod
 
 import boto3
+from botocore.exceptions import ClientError
+
+from storage.exceptions import KeyNotFoundException
+
 
 class BaseStorageBackend(object):
 
@@ -19,6 +23,10 @@ class BaseStorageBackend(object):
 
     @abstractmethod
     def save(self, file, key):
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, key):
         raise NotImplementedError
 
 
@@ -41,12 +49,21 @@ class S3StorageBackend(BaseStorageBackend):
         return res
 
     def fetch(self, key):
-        return self.client.get_object(Bucket=self.BUCKET_NAME, Key=key)
+        try:
+            return self.client.get_object(Bucket=self.BUCKET_NAME, Key=key)['Body']
+        except ClientError as e:
+            raise KeyNotFoundException()
 
     def save(self, file, key):
         self.client.upload_fileobj(file, self.BUCKET_NAME, key)
-        return key
+        return {'key': key}
 
+    def delete(self, key):
+        try:
+            self.client.delete_object(Bucket=self.BUCKET_NAME, Key=key)
+        except ClientError as e:
+            raise KeyNotFoundException()
+        return key
 
 class DiskStorageBackend(BaseStorageBackend):
 
@@ -59,8 +76,16 @@ class DiskStorageBackend(BaseStorageBackend):
         filepath = os.path.join(self.UPLOAD_DIR, key)
         if os.path.isfile(filepath):
             return open(filepath)
+        raise KeyNotFoundException()
 
     def save(self, file, key):
         filepath = os.path.join(self.UPLOAD_DIR, key)
         file.save(filepath)
         return key
+
+    def delete(self, key):
+        filepath = os.path.join(self.UPLOAD_DIR, key)
+        if os.path.isfile(filepath):
+            os.remove(filepath)
+            return key
+        raise KeyNotFoundException()

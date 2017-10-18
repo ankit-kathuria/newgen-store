@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
+from flask import send_file
 from flask_restful import Api, Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
+
+from signals import storage_backend_updated
+from storage.exceptions import StorageException
 
 
 app = Flask(__name__)
@@ -22,9 +26,12 @@ backend_parser.add_argument('backend', type=str, required=True)
 def update_storage_backend(backend):
     if backend.lower() not in app.config['STORAGE_BACKENDS'].keys():
         raise Exception('Invalid value provided for backend.')
+    old_backend = app.config['STORAGE_ENGINE']
+    new_backend = app.config['STORAGE_BACKENDS'][backend.lower()]
     app.config.update({
-        'STORAGE_ENGINE': app.config['STORAGE_BACKENDS'][backend.lower()]
+        'STORAGE_ENGINE': new_backend
     })
+    storage_backend_updated.send(None, old=old_backend, new=new_backend)
 
 
 class NewgenStore(Resource):
@@ -44,14 +51,25 @@ class NewgenStore(Resource):
         key = storage.save(args['file'], args['file'].filename)
         return {'key': key}
 
+
 class NewgenObject(Resource):
 
     def get(self, key):
         storage = app.config['STORAGE_ENGINE']
-        return storage.fetch(key)
+        try:
+            resp = storage.fetch(key)
+            # resp = make_response(storage.fetch(key))
+            # resp.headers['content-type'] = 'application/octet-stream'
+            return send_file(resp, attachment_filename=key)
+        except StorageException as e:
+            raise BadRequest(e.message)
 
     def delete(self, key):
-        print key, 'inside delete'
+        storage = app.config['STORAGE_ENGINE']
+        try:
+            return {'key': storage.delete(key)}
+        except StorageException as e:
+            raise BadRequest(e.message)
 
 
 class StoreAdmin(Resource):
@@ -60,7 +78,7 @@ class StoreAdmin(Resource):
         args = backend_parser.parse_args()
         try:
             update_storage_backend(args['backend'].lower())
-        except e:
+        except Exception as e:
             raise BadRequest(e.message)
 
 
