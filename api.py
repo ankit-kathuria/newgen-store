@@ -9,6 +9,7 @@ from werkzeug.exceptions import BadRequest
 
 from signals import storage_backend_updated
 from storage.exceptions import StorageException
+from storage.receivers import *
 
 
 app = Flask(__name__)

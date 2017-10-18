@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 class StorageException(Exception):
-	pass
+    pass
 
 class KeyNotFoundException(StorageException):
 
-	message = 'The provided key was not found.'
+    message = 'The provided key was not found.'
