@@ -1,0 +1,230 @@
+{
+	"variables": [],
+	"info": {
+		"name": "newgen-store-test",
+		"_postman_id": "4bf2fa2c-fcb3-5aef-57dd-c9a2fbf8e884",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list-all-0",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "new-obj-1",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "newgen.png"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "new-obj-2",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "list-all-1",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "fetch-obj-1",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store/newgen.png",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "fetch-obj-2",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store/sample.txt",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete-obj-1",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store/newgen.png",
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "list-all-2",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "change-backend-0",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/admin/update-backend",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"backend\": \"non-existent\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "change-backend-1",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/admin/update-backend",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"backend\": \"fs\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "list-all-3",
+			"request": {
+				"url": "http://flask-env.pgkt2cpjq4.ap-southeast-1.elasticbeanstalk.com/store",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "sample.txt"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
