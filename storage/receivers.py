@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from werkzeug.datastructures import FileStorage
+
 from signals import storage_backend_updated
 
 
@@ -12,5 +14,5 @@ def move_objects(app, **kwargs):
     if not (from_bknd and to_bknd) or from_bknd == to_bknd:
         return
     for key in from_bknd.list():
-        to_bknd.save(from_bknd.fetch(key), key)
+        to_bknd.save(FileStorage(from_bknd.fetch(key)), key)
         from_bknd.delete(key)

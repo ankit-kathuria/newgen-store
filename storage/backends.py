@@ -37,8 +37,8 @@ class S3StorageBackend(BaseStorageBackend):
     def __init__(self, access_key, secret_key):
         self.client = boto3.client(
             's3',
-            aws_access_key_id=access_key, # 'AKIAIXJPSKN2LUQKQRKQ',
-            aws_secret_access_key=secret_key # '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'
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key
         )
 
     def list(self):
@@ -64,6 +64,7 @@ class S3StorageBackend(BaseStorageBackend):
         except ClientError as e:
             raise KeyNotFoundException()
         return key
+
 
 class DiskStorageBackend(BaseStorageBackend):
 

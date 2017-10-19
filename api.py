@@ -79,6 +79,7 @@ class StoreAdmin(Resource):
             update_storage_backend(args['backend'].lower())
         except Exception as e:
             raise BadRequest(e.message)
+        return {}
 
 
 api.add_resource(NewgenObject, '/store/<string:key>')
