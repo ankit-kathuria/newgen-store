@@ -9,10 +9,10 @@ from werkzeug.exceptions import BadRequest
 
 from signals import storage_backend_updated
 from storage.exceptions import StorageException
-from storage.receivers import *
+from storage import receivers
 
 
-app = Flask(__name__)
+app = application = Flask(__name__)
 api = Api(app)
 
 app.config.from_object('settings.Config')
@@ -59,8 +59,6 @@ class NewgenObject(Resource):
         storage = app.config['STORAGE_ENGINE']
         try:
             resp = storage.fetch(key)
-            # resp = make_response(storage.fetch(key))
-            # resp.headers['content-type'] = 'application/octet-stream'
             return send_file(resp, attachment_filename=key)
         except StorageException as e:
             raise BadRequest(e.message)

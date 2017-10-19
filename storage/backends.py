@@ -44,7 +44,7 @@ class S3StorageBackend(BaseStorageBackend):
     def list(self):
         res = []
         bucket = self.client.list_objects(Bucket=self.BUCKET_NAME)
-        for obj in bucket['Contents']:
+        for obj in bucket.get('Contents', []):
             res.append(obj['Key'])
         return res
 
